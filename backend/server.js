@@ -1,23 +1,26 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const dotenv = require('dotenv');
-const cafesRoute = require('./routes/cafes');
-
-dotenv.config();
+const express = require("express");
+const mongoose = require("mongoose");
+const cors = require("cors");
+require("dotenv").config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middleware
+const cafeRoutes = require("./routes/cafes");
+
+// Middlewares
+app.use(cors());
 app.use(express.json());
 
 // Routes
-app.use('/cafes', cafesRoute);
+app.use("/cafes", cafeRoutes);
 
-// MongoDB Connection
+// MongoDB connection
 mongoose.connect(process.env.MONGO_URI)
-  .then(() => {
-    console.log('✅ Connected to MongoDB');
-    app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
-  })
-  .catch((error) => console.error('❌ DB connection error:', error));
+  .then(() => console.log("MongoDB connected"))
+  .catch(err => console.error("MongoDB connection error:", err));
+
+// Start server
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
