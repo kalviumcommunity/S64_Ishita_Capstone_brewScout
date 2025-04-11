@@ -40,29 +40,50 @@ cafeRouter.get("/:id", async (req, res) => {
   }
 });
 
-module.exports = cafeRouter;
-
-
 // POST - Add a cafe
 cafeRouter.post("/add", async (req, res) => {
+    const { name, location, tags } = req.body;
+  
+    // Basic validation
+    if (!name || !location) {
+      return res.status(400).json({
+        success: false,
+        message: "Name and location are required fields",
+        error: "ValidationError",
+      });
+    }
+  
     try {
-      const { name, location, tags } = req.body;
       const newCafe = new Cafe({ name, location, tags });
       await newCafe.save();
-      res.status(201).json({ message: "Cafe added successfully", cafe: newCafe });
+  
+      res.status(201).json({
+        success: true,
+        message: "Cafe added successfully",
+        data: newCafe,
+      });
     } catch (error) {
       console.error("Error adding cafe:", error);
-      res.status(500).json({ error: "Failed to add cafe" });
+      res.status(500).json({
+        success: false,
+        message: "Failed to add cafe",
+        error: error.message,
+      });
     }
   });
-
+  
+  
   // PUT - Update cafe by ID
 cafeRouter.put("/:id", async (req, res) => {
     const { id } = req.params;
   
     // Validate ID format
     if (!mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(400).json({ error: "Invalid cafe ID format" });
+      return res.status(400).json({
+        success: false,
+        message: "Invalid cafe ID format",
+        error: "InvalidObjectId",
+      });
     }
   
     try {
@@ -72,16 +93,25 @@ cafeRouter.put("/:id", async (req, res) => {
       });
   
       if (!updatedCafe) {
-        return res.status(404).json({ message: "Cafe not found" });
+        return res.status(404).json({
+          success: false,
+          message: "Cafe not found",
+          error: "NotFound",
+        });
       }
   
       res.status(200).json({
+        success: true,
         message: "Cafe updated successfully",
-        cafe: updatedCafe,
+        data: updatedCafe,
       });
     } catch (error) {
       console.error("Error updating cafe:", error);
-      res.status(500).json({ error: "Failed to update cafe" });
+      res.status(500).json({
+        success: false,
+        message: "Failed to update cafe",
+        error: error.message,
+      });
     }
   });
   
