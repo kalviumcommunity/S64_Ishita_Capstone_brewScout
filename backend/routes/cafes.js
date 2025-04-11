@@ -56,4 +56,33 @@ cafeRouter.post("/add", async (req, res) => {
     }
   });
 
+  // PUT - Update cafe by ID
+cafeRouter.put("/:id", async (req, res) => {
+    const { id } = req.params;
+  
+    // Validate ID format
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ error: "Invalid cafe ID format" });
+    }
+  
+    try {
+      const updatedCafe = await Cafe.findByIdAndUpdate(id, req.body, {
+        new: true,
+        runValidators: true,
+      });
+  
+      if (!updatedCafe) {
+        return res.status(404).json({ message: "Cafe not found" });
+      }
+  
+      res.status(200).json({
+        message: "Cafe updated successfully",
+        cafe: updatedCafe,
+      });
+    } catch (error) {
+      console.error("Error updating cafe:", error);
+      res.status(500).json({ error: "Failed to update cafe" });
+    }
+  });
+  
 module.exports = cafeRouter;
