@@ -80,3 +80,5 @@ Fix bugs and polish UI/UX.
 Final deployment of frontend & backend.
 
 Prepare presentation, video demos, and documentation.
+
+ backend deployed link- https://s64-ishita-capstone-brewscout.onrender.com
