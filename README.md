@@ -81,4 +81,6 @@ Final deployment of frontend & backend.
 
 Prepare presentation, video demos, and documentation.
 
- backend deployed link- https://s64-ishita-capstone-brewscout.onrender.com
+backend deployed link: https://s64-ishita-capstone-brewscout.onrender.com
+
+frontend deployed link: https://beautiful-sunshine-f8da0b.netlify.app/
